@@ -10,17 +10,14 @@ console.log('Electron Version: ', process.versions.electron);
 function createWindow () {
     // Create the browser window.
     win = new BrowserWindow({
-        frame: true,
         x: 0,
         y: 0,
         width: 800,
         height: 600,
         minWidth: 500,
         minHeight: 300,
-        backgroundColor: '#00000000',
         autoHideMenuBar: true,
-        titleBarStyle: 'hidden', // if it set to "default", it does not crash
-        vibrancy: "dark",
+        titleBarStyle: 'default', // if it set to "default", it does not crash
         show: true
     });
 
@@ -33,16 +30,14 @@ function createWindow () {
 function appReady() {
     mainWindow = createWindow();
     // Emitted when the window is closed.
-    mainWindow.on('closed', function () {
+    mainWindow.on('close', function () {
+        // mainWindow.setVibrancy('');
+        console.log('close');
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null
     });
-    setTimeout(function () {
-        // close win to get the segfault
-        mainWindow.close();
-    }, 2000);
 }
 
 // This method will be called when Electron has finished
@@ -66,6 +61,13 @@ app.on('activate', function () {
         createWindow();
     }
 });
+
+
+// if you uncomment this part, it works
+/* app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+    event.preventDefault();
+    callback(true);
+});*/
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
